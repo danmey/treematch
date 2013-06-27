@@ -1,0 +1,24 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Open Sexplib.Conv in generated module
+desc: |-
+  If any types outside the ast-defined types are used in an ast specification,
+  Sexplib.Conv is needed to provide int_of_sexp, string_of_sexp, etc.
+type: :bugfix
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :closed
+disposition: :fixed
+creation_time: 2012-10-21 06:48:35.362477 Z
+references: []
+
+id: ca94aedbef5b2d5d366fa42f8eb5a9fb131368ff
+log_events: 
+- - 2012-10-21 06:48:35.959617 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - ""
+- - 2012-10-21 11:06:12.731090 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - closed with disposition fixed
+  - ""

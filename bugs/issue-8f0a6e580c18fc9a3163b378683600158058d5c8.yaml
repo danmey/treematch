@@ -1,0 +1,31 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Verify that generated code is syntactically correct
+desc: |-
+  While generating code in treematch, validate names for their uid/lidness.
+  Currently, there is at least one instance in which an uppercase type name is
+  emitted.
+  
+  See testsuite/treematch/simple_map.tm: "... and Integer = int"
+type: :bugfix
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :closed
+disposition: :fixed
+creation_time: 2012-10-20 11:08:26.505171 Z
+references: []
+
+id: 8f0a6e580c18fc9a3163b378683600158058d5c8
+log_events: 
+- - 2012-10-20 11:08:29.366192 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - ""
+- - 2012-10-20 14:52:30.203088 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - closed with disposition fixed
+  - Now the Ident module is introduced, and propagates the case a camlp4 naming convention in type safe manner
+- - 2012-10-20 14:53:06.171105 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - commented
+  - We should consider adding Ident module to baselib

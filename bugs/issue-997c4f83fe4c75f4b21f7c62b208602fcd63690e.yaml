@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Treematch type checking
+desc: Define exhaustive type checking in treematch
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-20 11:20:53.063092 Z
+references: []
+
+id: 997c4f83fe4c75f4b21f7c62b208602fcd63690e
+log_events: 
+- - 2012-10-20 11:20:54.167053 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

@@ -1,0 +1,26 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Inline type definitions in treematch
+desc: |-
+  Treematch has enough knowledge to automatically (heuristically) generate an
+  improved type definition from an existing one by inlining trivial types and
+  types used once.
+  
+  Only types with no mutual recursion can be inlined.
+type: :feature
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-21 07:52:13.319296 Z
+references: []
+
+id: 680c32f717854612ac9648a8a876d1e056ac5d17
+log_events: 
+- - 2012-10-21 07:52:23.002817 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - |-
+    This might even work on more complex type definitions such as Expression in
+    the C++ grammar, which has one (or at least only a few) entry point(s) and one
+    recursive entry point. In between, there is no mutual recursion.

@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Fix pretty printing for treematch
+desc: It does some unrequired spaces and could looks much better e.g. especially the map.
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-20 11:32:32.815099 Z
+references: []
+
+id: 68fe3f4159ad4aba298d60dba3e43cf8d97912f5
+log_events: 
+- - 2012-10-20 11:32:33.903056 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

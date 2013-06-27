@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Define syntax for treematch type annotations
+desc: "\"Label:\" clashes with type annotations \":\" we need to make sure we don't introduce any amiguity, and the syntax looks clean and uncluttered. The other issue is that I'm not happy with the annotations in map looks like it clutters a bit the ast contruction."
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-20 11:34:20.383107 Z
+references: []
+
+id: 0c171830941e48c6005ba3c73f9890bfc986d573
+log_events: 
+- - 2012-10-20 11:34:22.159055 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Not consistent options
+desc: Tide up the options mess in treematch
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-21 13:35:30.595132 Z
+references: []
+
+id: f780b4a5b104350209de02258446146c08a3e92a
+log_events: 
+- - 2012-10-21 13:35:31.887063 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

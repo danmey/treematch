@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Define rules for excluding AST nodes after map
+desc: |-
+  When generating new AST we need to implement a code that excluded the dead nodes from the new generated ast
+  It happens that after transform we might not need the node anymore in ast (e.g. stripping location will get rid of the Location node)
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-20 11:23:15.791096 Z
+references: []
+
+id: 20f95d7ed374594c32c3ebb1a1f610b075d1620d
+log_events: 
+- - 2012-10-20 11:23:16.971057 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

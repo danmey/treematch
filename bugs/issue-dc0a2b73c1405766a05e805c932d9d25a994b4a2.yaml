@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Implement default traversals for map
+desc: If the visiting rule is not defined we need to fallback to visit it anyway, and generate the default code in the backend.
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-20 11:24:25.947105 Z
+references: []
+
+id: dc0a2b73c1405766a05e805c932d9d25a994b4a2
+log_events: 
+- - 2012-10-20 11:24:27.103055 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

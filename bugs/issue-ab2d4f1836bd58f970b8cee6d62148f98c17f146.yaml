@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Handle syntax errors
+desc: Parser don't report problems
+type: :feature
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-21 13:33:39.447132 Z
+references: []
+
+id: ab2d4f1836bd58f970b8cee6d62148f98c17f146
+log_events: 
+- - 2012-10-21 13:33:40.623077 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""

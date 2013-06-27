@@ -1,0 +1,24 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Use baselib's Cmdline in treematch
+desc: |-
+  We have a command line handling module, now. Treematch should use it. Examples
+  can be found in Glr.GlrOptions, Gramanl.Options and Ccparse.Options.
+type: :task
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :closed
+disposition: :fixed
+creation_time: 2012-10-20 17:05:13.082284 Z
+references: []
+
+id: 57efed2a7f71fd527513aeb78048201131b66eb1
+log_events: 
+- - 2012-10-20 17:05:13.626561 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - ""
+- - 2012-10-21 03:24:13.579086 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - closed with disposition fixed
+  - ""

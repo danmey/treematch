@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Treematch special backend
+desc: Currently treematch just emits straight adt data structures with a SimpleBackend module. We need to implement the recursive module way as SpecialBackend and give the user command line option.
+type: :task
+component: treematch
+release: 
+reporter: Wojciech Meyer <wojciech.meyer@gmail.com>
+status: :in_progress
+disposition: 
+creation_time: 2012-10-20 11:20:21.175099 Z
+references: []
+
+id: 47e11a7bc01656ee4c99d9d94b94192425e9090f
+log_events: 
+- - 2012-10-20 11:20:22.575055 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - created
+  - ""
+- - 2012-10-20 14:58:59.275116 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - changed status from unstarted to in_progress
+  - ""

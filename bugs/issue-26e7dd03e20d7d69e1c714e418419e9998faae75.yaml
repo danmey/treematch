@@ -1,0 +1,27 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Add treematch syntax for list and option
+desc: |-
+  The current ptree backend has special support for list and option
+  nonterminals. In treematch, they are represented as local Head/Tail and local
+  None/Some. It will be better for interoperability with existing (library) code
+  if these kinds are represented as existing language constructs (read:
+  parametrised types 'a list and 'a option).
+type: :feature
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-21 07:44:43.283864 Z
+references: []
+
+id: 26e7dd03e20d7d69e1c714e418419e9998faae75
+log_events: 
+- - 2012-10-21 07:44:46.471000 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - ""
+- - 2012-10-21 12:23:40.195086 Z
+  - Wojciech Meyer <wojciech.meyer@gmail.com>
+  - commented
+  - Now the ast part works. Type/AST inferences needs fixing (typing.ml), so not closing this down

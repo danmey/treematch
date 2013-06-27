@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Allow basic types in variants
+desc: |-
+  It may be useful to allow basic types (int, string, ...) within variant type
+  definitions in treematch. Currently, the ptree-treematch backend produces one
+  type alias per typed terminal. This may or may not be what we want, but we are
+  likely not to want this restriction for subsequent tree specs.
+type: :feature
+component: treematch
+release: 
+reporter: Pippijn van Steenhoven <pippijn@xinutec.org>
+status: :unstarted
+disposition: 
+creation_time: 2012-10-21 07:48:18.354794 Z
+references: []
+
+id: a4bae7b1b41da1d894fe76b093f37ec20982cbf0
+log_events: 
+- - 2012-10-21 07:48:43.047514 Z
+  - Pippijn van Steenhoven <pippijn@xinutec.org>
+  - created
+  - Also see the ticket on type definition inlining.
