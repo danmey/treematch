@@ -3,27 +3,27 @@ Target		= treematch
 
 # Sources
 Modules[] =
-	Constr
-	Ident
-#	Infer
-	Inline
-	Lexer
-	Node
-	Options
-	Parser
-	Program
-	SimpleBackend
-	SpecialBackend
-	Token
-	Tree
-	Treematch
-	Typing
+  Constr
+  Ident
+#  Infer
+  Inline
+  Lexer
+  Node
+  Options
+  Parser
+  Program
+  SimpleBackend
+  SpecialBackend
+  Token
+  Tree
+  Treematch
+  Typing
 
 # Library dependencies
-Requires[] =
-	baselib
-	camlp4.fulllib
-	sexplib.syntax
+OCaml-Requires[] =
+  baselib
+  camlp4.fulllib
+  sexplib.syntax
 
 # Camlp4
 Flags. +=
@@ -34,4 +34,4 @@ Flags. +=
   $|specialBackend.ml|	= -pp camlp4of
   $|tree.ml|		= -syntax camlp4o
 
-ocaml-program ()
+program (.DEFAULT)

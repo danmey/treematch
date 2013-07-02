@@ -12,7 +12,7 @@ and tycon =
   | Option of tycon
 with sexp
 
-open ExtFormat
+open CoreFormat
 
 let f = fprintf
 

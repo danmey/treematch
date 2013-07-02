@@ -26,7 +26,7 @@ with sexp
 type typed_program = Constr.tycon program
 with sexp
 
-open ExtFormat
+open CoreFormat
 let f = fprintf
 
 let pp_biarrow_sep pp () = f pp "@ =>@ "

@@ -43,10 +43,10 @@ module Collect = struct
   let print pp ast_name p =
     program p |> List.iter
         (fun (name, nodes) ->
-          ExtFormat.fprintf pp "@[<v>%a\n" Ident.pp_uident name;
+          CoreFormat.fprintf pp "@[<v>%a\n" Ident.pp_uident name;
           TreeMap.iter (fun (n,t) v ->
-            ExtFormat.fprintf pp "@[<h>\t%a::%a->%a@]@;" Ident.pp_uident n Ident.pp_uident t (new Constr.print)#constr v) nodes);
-    ExtFormat.fprintf pp "@]@."
+            CoreFormat.fprintf pp "@[<h>\t%a::%a->%a@]@;" Ident.pp_uident n Ident.pp_uident t (new Constr.print)#constr v) nodes);
+    CoreFormat.fprintf pp "@]@."
 end
 
 (* +=====~~~-------------------------------------------------------~~~=====+ *)

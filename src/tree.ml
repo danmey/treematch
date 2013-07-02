@@ -14,7 +14,7 @@ and const =
   | Int of int
 with sexp
 
-open ExtFormat
+open CoreFormat
 let f = fprintf
 
 let type_of = function
