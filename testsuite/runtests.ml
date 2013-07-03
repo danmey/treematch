@@ -4,7 +4,7 @@
 
 TestFramework.(run "testsuite" [
   {
-    tool = "treematch";
+    tool = "treematch.native";
     suffixes = [".tm"];
     options = Some "-special";
     dirs = [
