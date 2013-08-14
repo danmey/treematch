@@ -1,0 +1,8 @@
+=head1 Treematch
+
+Treematch is a typed tree structure generator. It can generate the tree
+structure as well as various operations such as map and fold. Using matching
+strategies, it is possible to encode complex compound operations in a purely
+declarative way.
+
+L<Git repository|https://github.com/danmey/treematch>
