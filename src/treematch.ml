@@ -1,8 +1,8 @@
 open Options
 
 let (|>) = BatPervasives.(|>)
-let (-|) = BatPervasives.(-|)
-let (|-) = BatPervasives.(|-)
+let (%) = BatPervasives.(%)
+let (%>) = BatPervasives.(%>)
 
 
 (* +=====~~~-------------------------------------------------------~~~=====+ *)
@@ -37,7 +37,7 @@ let main =
       begin
         let lexbuf = Lexing.from_channel (open_in name) in
         let tokens = tokenise [] Lexer.token lexbuf in
-        List.iter (print_endline -| Token.to_string) tokens;
+        List.iter (print_endline % Token.to_string) tokens;
       end;
       Printf.printf "***** End of %s\n" name
     );
@@ -56,8 +56,8 @@ let main =
     if Options._infer () then (
       List.iter ((|>) program) [
         (new Program.print) # program Format.std_formatter;
-        Typing.program |- Program.output_typed_program stdout;
-        Typing.program |- (new Program.typed_print)#program Format.std_formatter;
+        Typing.program %> Program.output_typed_program stdout;
+        Typing.program %> (new Program.typed_print)#program Format.std_formatter;
       ]
     );
 
