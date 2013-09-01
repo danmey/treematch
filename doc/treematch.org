@@ -1,0 +1,552 @@
+# -*- mode:org; mode:reftex; indent-tabs-mode:nil; tab-width:2 -*-
+#+TITLE:     Treematch - visitor patterns
+#+AUTHOR:    Wojciech Meyer
+#+EMAIL:     wojciech.meyer@gmail.com
+#+DATE:      2013-08-16
+
+#+latex_header: \documentclass[twoside]{article}
+#+latex_header:
+#+latex_header: \usepackage{lipsum} % Package to generate dummy text throughout this template
+#+latex_header:
+#+latex_header: \usepackage[sc]{mathpazo} % Use the Palatino font
+#+latex_header: \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+#+latex_header: \linespread{1.05} % Line spacing - Palatino needs more space between lines
+#+latex_header: \usepackage{microtype} % Slightly tweak font spacing for aesthetics
+#+latex_header:
+#+latex_header: \usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+#+latex_header: \usepackage{multicol} % Used for the two-column layout of the document
+#+latex_header: \usepackage{hyperref} % For hyperlinks in the PDF
+#+latex_header:
+#+latex_header: \usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+#+latex_header: \usepackage{booktabs} % Horizontal rules in tables
+#+latex_header: \usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+#+latex_header:
+#+latex_header: \usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+#+latex_header: \usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+#+latex_header:
+#+latex_header: \usepackage{abstract} % Allows abstract customization
+#+latex_header: \renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+#+latex_header: \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+#+latex_header:
+#+latex_header: \usepackage{titlesec} % Allows customization of titles
+#+latex_header: \renewcommand\thesection{\Roman{section}}
+#+latex_header: \titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+#+latex_header:
+#+latex_header: \usepackage{fancyhdr} % Headers and footers
+#+latex_header: \pagestyle{fancy} % All pages have headers and footers
+#+latex_header: \fancyhead{} % Blank out the default header
+#+latex_header: \fancyfoot{} % Blank out the default footer
+#+latex_header: \fancyhead[C]{Wojciech Meyer $\bullet$ November 2012 % Custom header text
+#+latex_header: \fancyfoot[RO,LE]{\thepage} % Custom footer text
+#+latex_header: \title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Article Title}} % Article title
+#+latex_header:
+#+latex_header: \author{
+#+latex_header: \large
+#+latex_header: \textsc{Wojciech Meyer}\thanks{A thank you or further information}\\[2mm] % Your name
+#+latex_header: \normalsize \href{mailto:wojciech.meyer@gmail.com}{wojciech.meyer@gmail.com} % Your email address
+#+latex_header: \vspace{-5mm}
+#+latex_header: }
+#+latex_header: \date{}
+#+latex_header:
+#+latex_header: \providecommand{\alert}[1]{\textbf{#1}}
+#+latex_header:
+
+* Introduction
+  Pattern matching is one of the key features of most modern computer languages. The usage of pattern matching leads to readable and easy to understand code. Pattern matching with strong typing also allows the compiler to report missed cases therefore increases type safety.
+
+Pattern matching was introduced in ML (Standard ML, Haskell and OCaml) family of languages along with a data type declarations. Algebraic data types and pattern matching have been playing central role in development of strictly typed functional languages.
+
+The standard way of iterating through the data structures (usually recursive) is to provide a set of mutually recursive functions that reflect the data structures itself. The programmer chooses how the tree is being traversed. This is very generic solution and yet gives full control over the way the data structure is being iterated.
+
+Iteration over data structure with recursive functions approach is very powerful but suffers from some drawbacks:
+- programmer must not forget about calling recursive function for each of the parameters; omission leads to skipping entirelly the node
+- there are no default rules, adding new node to the data type yields adding code in every place to handle that; we risk run time problems and compiler warnings if we do so
+- there is no easy way to compose the data types
+- there is no way of infering new data types out of the visitors
+- also no way of inheriting some exiting behavior out of the code, in better way than using higher order functions
+
+There is exisiting work on traversing of the data structures in generic way:
+- using meta programming to generate the visitor code out of the data type definitions (OCaml, Camlp4 - FoldGenerator)
+- using higher order polymoprhism and type classes and generic programming (Haskell, Scrap Your Boilerplate)
+
+After writing lot of ML compiler code we found that most of the iteration over data structure lead to some cleary receognised patterns. We also found that some of the ML ADTs can be represented by higher level abstractions.
+
+* AST definition
+
+** Tag
+   Binds name to the data constructor in scope of single node.
+
+** Node
+   Binds name to group of constructors in scope of ASTs.
+
+** Comparision to ML style Algebraic Data Types
+   Can have the same tag name across different nodes, unlike in ML or Haskell, but matcher needs to know which nodes are being matched.
+
+   Unlike ADTs no polymorphic nodes (e.g. nodes parametrised by nodes) are allowed.
+
+** Example
+   Here is a simple example of a simple pure language:
+
+#+BEGIN_SRC tuareg
+
+ast Program {
+Program:     Program Definition Program
+             End
+Definition:  Function Function
+             Global Global
+Function:    Function Identifer Arguments Expression
+Arguments:   Argument Identifer Arguments
+             End
+Expression:  Let Identifer Expression Expression
+             Operator Operator Expression Expression
+             Call Name Expressions
+             Variable Identifier
+             Constant Integer
+Expressions: Expression Expressions
+             End
+Operator:    Plus
+             Minus
+             Mult
+Global:      Global Identifer
+Identifer: string
+Integer: int
+}
+
+#+END_SRC
+
+Note: Syntacticaly we could have a bar between cases to match most of the parsing tools.
+
+* Match expressions
+  Follow Lisp convention for S-expressions.
+** Example
+   A fragment:
+
+#+BEGIN_SRC tuareg
+List: Cons (Cons "defun" (Cons (Cons args) Nil) (Cons body)) => ...
+#+END_SRC
+
+** Node modifiers
+*** Cut operator
+    We can now annotate some of the nodes like this:
+
+#+BEGIN_SRC tuareg
+List: Cons (Cons "defun" !(Cons (Cons args) Nil) (Cons !body)) => ...
+#+END_SRC
+
+    Cut operator prevents to recursively descent.
+
+    Mostly useful for fold/reduce strategies.
+
+*** Wide operator
+    The default is depth first strategy of visiting nodes, we can say that we want breadth first using ~ operator.
+
+#+BEGIN_SRC tuareg
+List: ~Cons (Cons "defun" !(Cons (Cons args) Nil) (Cons !body)) => ...
+#+END_SRC
+
+*** Deep operator
+    We can annotate with @ to indicate depth first.
+
+#+BEGIN_SRC tuareg
+List: ~Cons (Cons "defun" !(Cons (Cons args) Nil) (Cons @body)) => ...
+#+END_SRC
+
+*** Precedence
+    Sometimes we want to visit first some nodes before others we can do it via $n:
+
+#+BEGIN_SRC tuareg
+List: ~Cons (Cons "defun" (Cons (Cons args)$1 Nil) (Cons @body$10)) => ...
+#+END_SRC
+
+In this situation we say that the strategy is breadth first, up to the body node where body will be deep first. The order of visiting is first body and then args (as body have bigger precendce).
+
+* Strategies
+** Map strategy
+
+   Visit recursively the AST in a specified visiting strategy, constructing new AST. Infer the AST if it's possible or use previously defined.
+
+   Only map can create a infered declaration of AST.
+
+*** Example
+#+BEGIN_SRC tuareg
+ast CustomList {
+List: Cons Integer List
+      Nil
+}
+
+map treeify : CustomList => $CustomTree {
+List: Cons x xs => Cons (Tree (Leaf x) (Leaf x)) xs
+    | _ => _
+}
+#+END_SRC
+
+this will built up this AST declaration:
+
+#+BEGIN_SRC tuareg
+ast CustomTree {
+List: Cons Tree list
+    | Nil
+Tree: Tree Tree
+Leaf: Leaf Integer
+}
+#+END_SRC
+
+Note the generated AST node tree is not recursive we can enforce it either by declaring CustomTree explicitly or by doing explicit annotation:
+
+#+BEGIN_SRC tuareg
+
+map treeify : CustomList => $CustomTree {
+List: Cons x xs => Cons (Tree (Leaf x : Tree) (Leaf x : Tree)) xs
+      _ => _
+}
+
+#+END_SRC
+
+will now generate as expected:
+
+#+BEGIN_SRC tuareg
+ast CustomTree {
+List: Cons Tree list
+      Nil
+
+Tree: Tree Tree
+      Leaf Integer
+}
+#+END_SRC
+
+We can also say we don't want to infer, just drop the $ prefix.
+
+#+BEGIN_SRC tuareg
+map treeify : CustomList => CustomTree {
+List: Cons x xs => Cons (Tree (Leaf x : Tree) (Leaf x : Tree)) xs
+    | _ => _
+}
+#+END_SRC
+
+NOTE: Not sure if want generate recursion by default or not.
+
+** Fold strategy
+
+Visit the AST in a specified visiting strategy, collecting some data.
+The nodes not specified will preserve the data across visits.
+
+*** Example
+
+#+BEGIN_SRC tuareg
+
+fold unused : Program => [ variables : stack ] {
+
+Expression:  Variable v => { variables - v }
+             Let v _ => { variables + v }
+}
+
+#+END_SRC
+
+This will collect all the variables not used in the program.
+
+Of course fold is mostly useful with all the node modifiers.
+
+** Reduce strategy
+
+   Visit the AST in a specified visting strategy, creating new AST, the same time collecting the data.
+
+Combination of map and fold at the same time but reduce can't create automatically derived ASTs. Can however reuse the existing AST specified explicitly.
+
+*** Example
+
+#+BEGIN_SRC tuareg
+
+reduce elim : Program => Program * [ variables : stack ] {
+
+Expression:  Variable v => { variables - v } _
+             Let v e b  => { variables + v }
+                           after { variables & v => b }
+}
+
+#+END_SRC
+
+This will eliminate sporious let bindings.
+
+We have two strategies of updating the tree, after or before descent with collection.
+
+Please note
+
+** Rewrite strategy
+
+   Keep visiting and rewriting AST until the fixpoint will be reached.
+   Terminate rewriting after some iteration if the rules are not normalizing the AST.
+
+#+BEGIN_SRC tuareg
+
+rewrite constant_plus_fold : Program => Program {
+
+Expression: Operator (Plus (Const l) (Const r))  => Const (`$l+$r`)
+}
+
+#+END_SRC
+
+We can specify the termination threshold if we are not sure if the rewrite will terminate:
+
+#+BEGIN_SRC tuareg
+
+rewrite constant_fold 10000 : Program => Program {
+
+Expression: Operator (Plus (Const l) (Const r))  => Const (`$l+$r`)
+}
+
+#+END_SRC
+
+** Recurse strategy
+   Rewrite and collect information at the same time.
+
+*** Example
+
+We can rewrite previous version of elim in a complicated way rewriting one let at a time.
+
+#+BEGIN_SRC tuareg
+
+recurse elim 100 : Program => Program * [ variables : stack;
+                                          recurse=true : bool ] {
+
+Expression:  Variable v => { variables - v } _
+             Let v e b when recurse  =>
+                          { variables + v; recurse=false }
+                           after { variables & v => b }
+             Let v !e !b when not recurse  => _
+}
+
+#+END_SRC
+
+Each time the visitor visits the Let node it will update recurse flag to false, and will descent to body of let end expression.
+
+Then it will never recurse again as the flag was set, but because the strategy is recurse it will re-iterate again with the flag reset. This will happen until fixpoint or when we exceed 100 iterations.
+
+*** Example
+
+** Iter strategy
+
+   Like map but embeds arbitral ML (object) code, with the explict recursion following some convention. This is mostly for side effects.
+We can pretty print the tree using Format module for instance. Or print all the variables like here:
+
+#+BEGIN_SRC tuareg
+
+iter print_vars : Program => _ {
+Expression:  Variable v => { print_endline $v }
+}
+#+END_SRC tuareg
+
+** Eval strategy
+
+Like fold version of iter. Here is an eval function for the Program AST:
+
+#+BEGIN_SRC tuareg
+
+iter print_vars : Program => Integer * [env:map Identifer Integer] {
+Expression:  Let v e b => { env + (e,b) } before b
+             Operator Plus l r =>  `$l + $r`
+             Operator Minus l r =>  `$l - $r`
+             Operator Mult l r =>  `$l * $r`
+             Variable nm => env[nm]
+             Constant i => i
+}
+
+#+END_SRC
+
+* Composing ASTs
+
+We can include one AST in another after or before.
+
+#+BEGIN_SRC tuareg
+ast Program {
+include AfterAST
+Program:     Program Definition Program
+             End
+Definition:  Function Function
+             Global Global
+Function:    Function Identifer Arguments Expression
+Arguments:   Argument Identifer Arguments
+             End
+Expression:  Let Identifer Expression Expression
+             Operator Operator Expression Expression
+             Call Name Expressions
+             Variable Identifier
+             Constant Integer
+Expressions: Expression Expressions
+             End
+Operator:    Plus
+             Minus
+             Mult
+Global:      Global Identifer
+Identifer: string
+Integer: int
+include BeforeAST
+}
+#+END_SRC
+
+The new nodes will override old ones.
+
+* Paremetric ASTs
+We can paramerize one AST over another like:
+#+BEGIN_SRC tuareg
+ast Program A {
+Program:     Program Definition Program
+             End
+Definition:  Function Function
+             Global Global
+Function:    Function Identifer Arguments Expression
+Arguments:   Argument Identifer Arguments
+             End
+Expression:  Let Identifer Expression Expression
+             Operator Operator Expression Expression
+             Call Name Expressions
+             Variable Identifier
+             Constant Integer
+Expressions: Expression Expressions
+             End
+Operator:    Plus
+             Minus
+             Mult
+Global:      Global Identifer
+Identifer: string
+Integer: int
+include A
+}
+
+ast Program(ast { Constant: Integer })
+#+END_SRC
+
+* Inheriting visitors
+
+We can inherit visitors. This can be done by including another AST fragment at any point of the AST definition. The exisiting definitions will be shadowed.
+
+#+BEGIN_SRC tuareg
+ast Expression {
+Expression:  Let Identifer Expression Expression
+             Operator Operator Expression Expression
+             Call Name Expressions
+             Variable Identifier
+             Constant Integer
+Expressions: Expression Expressions
+             End
+Operator:    Plus
+             Minus
+             Mult
+Global:      Global Identifer
+Identifer:   string
+Integer:     int
+}
+#+END_SRC
+
+#+BEGIN_SRC tuareg
+ast Program {
+Program:     Program Definition Program
+             End
+Definition:  Function Function
+             Global Global
+Function:    Function Identifer Arguments Expression
+Arguments:   Argument Identifer Arguments
+             End
+include! Expression
+}
+#+END_SRC
+
+* Abstract nodes
+
+The nodes could be marked abstract, this means that the node is empty and the ast can't be instantiated directly, used by the strategies, but instead the ast is meant to be included in the ast which defines the abstract nodes.
+
+* Composing visitors
+* Fork
+TODO.
+
+  Can appear in reduce and recurse strategy only.
+
+  WARNING: Forking might exhibit exponential complexity!
+
+  Useful for unification style type checking.
+
+  Visit two nodes inheriting information the same information in paraler and merge them into one.
+
+** Merging fork
+* Sugar for collectors
+  Syntax sugar for sets, queue and stack provided.
+** Set
+*** Insert
+*** Remove
+*** Member
+*** First
+*** Example
+** Stack
+*** Push
+*** Pop
+*** Top
+*** Example
+** Queue
+*** Append
+*** Remove
+*** Last
+*** Example
+* Embedding ML code
+** Where it can appear?
+- Collecting expressions
+- Controling descending
+- Controling termination (rewrite & recurse)
+- Actions for eval and iter strategies
+* Configuration
+Since the tool might support number of languges and have strict conventions enforcing semantics, we will provide a simple way of configuration:
+
+#+BEGIN_SRC tuareg
+
+config {
+  Node: capitalise
+  Ast:  lowercase
+  Visitor: uppercase
+  Replace: CFalse False
+  Prefix: while
+}
+
+#+END_SRC
+
+* FFI for OCaml
+* Generating OCaml code
+
+#+BEGIN_SRC tuareg
+class treeify (self : 'a) = object
+  method list : CustomList.List.t -> CustomTree.List.t
+end
+#+END_SRC
+
+and these modules and types:
+
+#+BEGIN_SRC tuareg
+module Integer : sig
+  type t = int
+end = struct
+type t = int
+end and List : sig
+type t = Cons of int * t
+       | Nil
+end = struct
+type t = Cons of int * t
+       | Nil
+end
+#+END_SRC
+
+
+*** Example
+* Printing nodes
+* Parsing nodes
+* Marshaling and un-marshaling nodes
+* Glossary
+- visitor
+- inherited visitor
+- ast
+- derived ast
+- inherited ast
+- tag
+- node
+- strategy
+- descending
+- collector
+- fork
+- cut
+- clause
