@@ -1,0 +1,26 @@
+Source: ocaml-treematch
+Section: ocaml
+Priority: optional
+Maintainer: Wojciech Meyer <wojciech.meyer@gmail.com>
+Uploaders: 
+  Pippijn van Steenhoven <pip88nl@gmail.com>
+Build-Depends:
+  ocaml-nox (>= 3.12),
+  ocaml-findlib,
+  omake,
+  noweb,
+  libbaselib-ocaml-dev,
+  libsexplib-camlp4-dev,
+  dh-ocaml,
+  debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: https://github.com/pippijn/treematch
+Vcs-Git: git://github.com/pippijn/treematch
+Vcs-Browser: https://github.com/pippijn/treematch
+
+Package: treematch
+Architecture: any
+Depends: ${ocaml:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Provides: ${ocaml:Provides}
+Description: Fast lexer generator compatible with ocamllex
+ Stuff.
