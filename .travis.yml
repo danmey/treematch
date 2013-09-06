@@ -6,9 +6,9 @@ install:
    - sudo apt-get update
    - sudo apt-get install omake noweb valgrind dh-ocaml camlp4-extra menhir libbatteries-ocaml-dev libsexplib-camlp4-dev libderiving-ocsigen-ocaml-dev
    - wget https://raw.github.com/pippijn/obuild/master/script/travis-depend?$(date +%s) -O travis-depend
+   - sudo sh -c 'cat debian/camlp4-meta.patch >> /usr/lib/ocaml/METAS/META.camlp4'
    - chmod +x travis-depend
    - ./travis-depend baselib
-   - sudo sh -c 'cat debian/camlp4-meta.patch >> /usr/lib/ocaml/METAS/META.camlp4'
 
 # whitelist
 branches:
