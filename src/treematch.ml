@@ -1,8 +1,8 @@
 open Options
 
-let (|>) = BatPervasives.(|>)
-let (%) = BatPervasives.(%)
-let (%>) = BatPervasives.(%>)
+let (|>) = CorePervasives.(|>)
+let (%) = CorePervasives.(%)
+let (%>) = CorePervasives.(%>)
 
 
 (* +=====~~~-------------------------------------------------------~~~=====+ *)
