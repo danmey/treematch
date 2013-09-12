@@ -8,6 +8,7 @@ Build-Depends:
   obuild,
   ocaml-nox (>= 3.12),
   ocaml-findlib,
+  camlp4-extra,
   menhir,
   libbaselib-ocaml-dev,
   libsexplib-camlp4-dev,
