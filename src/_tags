@@ -1,0 +1,5 @@
+true: package(batteries), lib_baselib, use_menhir
+<treematch.*>: package(sexplib), package(camlp4), package(camlp4.fulllib)
+<{constr,program,tree}.*>: package(sexplib), package(sexplib.syntax), syntax(camlp4o)
+<ident.*>: package(sexplib)
+<*Backend.*>: package(camlp4), camlp4of
