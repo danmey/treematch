@@ -19,8 +19,16 @@ let lident : string -> lident = fun name ->
 
 let ident : string -> 'a ident = BatPervasives.identity
 
-let uident_of_sexp (Sexplib.Type.Atom name) = name
-let lident_of_sexp (Sexplib.Type.Atom name) = name
+let uident_of_sexp name =
+  match name with
+    | Sexplib.Type.Atom name -> name
+    | _ -> failwith "uident_of_sexp accepts only Atoms"
+
+let lident_of_sexp name =
+  match name with
+    | Sexplib.Type.Atom name -> name
+    | _ -> failwith "lident_of_sexp accepts only Atoms"
+
 let sexp_of_uident (name : uident) = Sexplib.Type.Atom name
 let sexp_of_lident (name : lident) = Sexplib.Type.Atom name
 

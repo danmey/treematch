@@ -13,15 +13,18 @@ module Emit = struct
   and definition =
     function
     | Program.Ast (name, nodes) ->
-      let first_type :: rest_types = List.map ast_node nodes in
-      <:str_item<
+      begin match List.map ast_node nodes with
+        | first_type :: rest_types ->
+          <:str_item<
 
-        module $uid:Ident.string_of_uident name$ = struct
-            type t = $first_type$
-            and $rest_types |> Ast.tyAnd_of_list$
-        end
-
+            module $uid:Ident.string_of_uident name$ = struct
+                type t = $first_type$
+                and $rest_types |> Ast.tyAnd_of_list$
+            end
       >>
+        | _ -> failwith "AST must contain at least one Node"
+      end
+
     | Program.Map (nm, (st,dt), nodes) ->
       let methods = List.map (rewrite_node (st,dt)) nodes in
       <:str_item<
@@ -43,8 +46,8 @@ module Emit = struct
         <:ctyp<
 
           $lid:Ident.string_of_lident (Ident.lident_of_uident nm)$ = $lid:Ident.string_of_lident name$
-
         >>
+    | Program.AliasNode _ -> failwith "TODO"
 
   and ast_clause (nm, args) =
     let args =

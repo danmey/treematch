@@ -121,7 +121,6 @@ end
 
 module Rename = struct
   let rec program p =
-    let types = Collect.program p in
     let is_simple = function
     | T.Tree (_, (_, args)) ->
         List.for_all (function T.Var _ -> true | _ -> false) args
@@ -146,7 +145,7 @@ module Rename = struct
     | x -> x
     in
     let replace = function
-    | (P.Ast (nm,x)) as a ->
+    | (P.Ast (nm,x)) ->
             (* This is ugly! *)
         P.Ast
           (nm,
@@ -171,7 +170,6 @@ end
 
 module Unify = struct
   let rec program p =
-    let types = Collect.program p in
     let definition = function
     | P.Map (nm, (s,d), nodes) ->
 
@@ -249,30 +247,30 @@ end
 
 module Default = struct
   let rec program p =
-    let types = Collect.program p in
+    (* let types = Collect.program p in *)
 
-    let is_simple = function
-    | T.Tree (_, (_, args)) ->
-        List.for_all (function T.Var _ -> true | _ -> false) args
-    | _ -> true
-    in
+    (* let is_simple = function *)
+    (* | T.Tree (_, (_, args)) -> *)
+    (*     List.for_all (function T.Var _ -> true | _ -> false) args *)
+    (* | _ -> true *)
+    (* in *)
 
-    let collect_simple (l,_) =
-      if is_simple l then
-        match l with
-        | T.Tree (_, (nm,args)) ->
-            Some (nm, List.map Tree.type_of args)
-        | _ -> None
-      else None
-    in
-    let remove_defined defs (nm,clauses) =
-      let simple = BatList.filter_map collect_simple clauses in
-      let simple = List.map (fun x ->  nm, x) simple in
-      List.fold_right
-        (fun (el,(nm,_)) set ->
-          TreeMap.remove (el, nm) set) simple defs
-    in
-    let env node_name = List.assoc node_name types in
+    (* let collect_simple (l,_) = *)
+    (*   if is_simple l then *)
+    (*     match l with *)
+    (*     | T.Tree (_, (nm,args)) -> *)
+    (*         Some (nm, List.map Tree.type_of args) *)
+    (*     | _ -> None *)
+    (*   else None *)
+    (* in *)
+    (* let remove_defined defs (nm,clauses) = *)
+    (*   let simple = BatList.filter_map collect_simple clauses in *)
+    (*   let simple = List.map (fun x ->  nm, x) simple in *)
+    (*   List.fold_right *)
+    (*     (fun (el,(nm,_)) set -> *)
+    (*       TreeMap.remove (el, nm) set) simple defs *)
+    (* in *)
+    (* let env node_name = List.assoc node_name types in *)
     let node (node_name, constrs) =
       node_name,
       List.map (fun (constr_name, arguments) ->

@@ -35,23 +35,23 @@ rule token = parse
 | "]"                                                           { TOK_RBRACKET }
 | "{" | "<%"                                                    { TOK_LBRACE }
 | "}" | "%>"                                                    { TOK_RBRACE }
-| "->"                                                          { TOK_ARROW }
+(* | "->"                                                          { TOK_ARROW } *)
 | "=>"                                                          { TOK_BIARROW }
-| "::"                                                          { TOK_COLONCOLON }
-| "."                                                           { TOK_DOT }
-| "!"                                                           { TOK_BANG }
-| "~"                                                           { TOK_TILDE }
-| "+"                                                           { TOK_PLUS }
-| "-"                                                           { TOK_MINUS }
-| "*"                                                           { TOK_STAR }
-| "=="                                                          { TOK_EQUALEQUAL }
+(* | "::"                                                          { TOK_COLONCOLON } *)
+(* | "."                                                           { TOK_DOT } *)
+(* | "!"                                                           { TOK_BANG } *)
+(* | "~"                                                           { TOK_TILDE } *)
+(* | "+"                                                           { TOK_PLUS } *)
+(* | "-"                                                           { TOK_MINUS } *)
+(* | "*"                                                           { TOK_STAR } *)
+(* | "=="                                                          { TOK_EQUALEQUAL } *)
 | "?"                                                           { TOK_QUESTION }
 | ":"                                                           { TOK_COLON }
 | "="                                                           { TOK_EQUAL }
-| ","                                                           { TOK_COMMA }
-| "..."                                                         { TOK_ELLIPSIS }
-| "_"                                                           { TOK_ELLIPSIS }
-| ";"                                                           { TOK_SEMICOLON }
+(* | ","                                                           { TOK_COMMA } *)
+(* | "..."                                                         { TOK_ELLIPSIS } *)
+(* | "_"                                                           { TOK_ELLIPSIS } *)
+(* | ";"                                                           { TOK_SEMICOLON } *)
 | "|"                                                           { TOK_BAR }
 
 (* C++ comments *)
@@ -68,11 +68,11 @@ rule token = parse
 | uident                                                        { TOK_UIDENT (Ident.uident (Lexing.lexeme lexbuf)) }
 | lident                                                        { TOK_LIDENT (Ident.lident (Lexing.lexeme lexbuf)) }
 
-| d+                                                            { TOK_INT_LITERAL (Lexing.lexeme lexbuf) }
+(* | d+                                                            { TOK_INT_LITERAL (Lexing.lexeme lexbuf) } *)
 
 (* strings *)
-| 'L'?sstring                                                   { TOK_CHAR_LITERAL (Lexing.lexeme lexbuf) }
-| 'L'?dstring                                                   { TOK_STRING_LITERAL (Lexing.lexeme lexbuf) }
+(* | 'L'?sstring                                                   { TOK_CHAR_LITERAL (Lexing.lexeme lexbuf) } *)
+(* | 'L'?dstring                                                   { TOK_STRING_LITERAL (Lexing.lexeme lexbuf) } *)
 
 | eof                                                           { TOK_EOF }
 

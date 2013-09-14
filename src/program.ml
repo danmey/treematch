@@ -56,6 +56,7 @@ class virtual ['a] base_print = object (self)
   method type_decl pp (s,d) =
     f pp "@[<hov 2>%a@]" (pp_list Ident.pp_uident pp_biarrow_sep) [s;d]
   method clause = (new Constr.print) # constr
+  method rewrite_clause _ _ = ()
 end
 
 (* +=====~~~-------------------------------------------------------~~~=====+ *)
@@ -65,7 +66,7 @@ end
 class print = object (self : 'a)
   inherit [unit] base_print
   (* This could be done by passing the object and setting up a type constraint *)
-  method rewrite_clause pp (ltree, rtree) =
+  method! rewrite_clause pp (ltree, rtree) =
     f pp "@[<hov 2>%a@ =>@ %a@]" (new Tree.print) # tree ltree (new Tree.print) # tree rtree
 end
 

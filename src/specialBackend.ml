@@ -17,9 +17,9 @@ module Emit = struct
   and definition =
     function
     | Program.Ast (name, nodes) ->
-
-      let first_type :: rest_types = List.map ast_node nodes in
-      let (first_name,_) :: _ = nodes in
+      begin match List.map ast_node nodes with
+        | first_type :: rest_types ->
+          let (first_name,_) = List.hd nodes in
       <:str_item<
 
         module $uid:Ident.string_of_uident name$ = struct
@@ -40,6 +40,7 @@ module Emit = struct
 
         end
       >>
+        | _ -> failwith "AST must contain at least one Node" end
     | Program.Map (nm, (st,dt), nodes) ->
       let methods = List.map (rewrite_node (st,dt)) nodes in
       <:str_item<
@@ -117,12 +118,13 @@ module Emit = struct
 
  and paTy = function
  | Constr.Tycon nm -> <:patt<$uid:Ident.string_of_uident nm$>>
-
+ | _ -> failwith "TODO"
  and paTree t = function
  | Tree.Tree (Constr.Tycon ty,(nm, lst)) -> <:patt< $uid:Ident.string_of_uident t$. $uid:Ident.string_of_uident ty$ . $uid:Ident.string_of_uident nm$ $List.map (paTree t) lst |> Ast.paCom_of_list$>>
  | Tree.Var (_,nm) -> <:patt< $lid:Ident.string_of_lident nm$ >>
  | Tree.Const (Tree.String str) -> <:patt<$str:str$>>
  | Tree.Const (Tree.Int i) -> <:patt<$int:string_of_int i$>>
+ | _ -> failwith "TODO"
 
  and exTree t = function
  | Tree.Tree (Constr.Tycon ty,(nm, lst)) -> constr t ty (nm, lst)
@@ -141,6 +143,7 @@ module Emit = struct
      tycon ty
  | Tree.Const (Tree.String str) -> <:expr<$str:str$>>
  | Tree.Const (Tree.Int i) -> <:expr<$int:string_of_int i$>>
+ | _ -> failwith "TODO"
 
  and constr t ty (nm, lst) =
    let e = List.map (exTree t) lst |> Ast.exCom_of_list in
