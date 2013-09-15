@@ -5,6 +5,7 @@ install Program ".DEFAULT" [
   (* Sources *)
   Modules [
     "Constr";
+    "Error";
     "Ident";
     (*"Infer";*)
     "Inline";
