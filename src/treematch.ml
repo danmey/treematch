@@ -26,7 +26,7 @@ let rec tokenise tokens token lexbuf =
 (* +=====~~~-------------------------------------------------------~~~=====+ *)
 
 
-let main =
+let main l =
   let single name =
     let program =
       let lexbuf = Lexing.from_channel (open_in name) in
@@ -65,7 +65,7 @@ let main =
       Inline.program program
     )
   in
-  List.iter single
+  Error.try_error (fun () -> List.iter single l)
 
 (* +=====~~~-------------------------------------------------------~~~=====+ *)
 (* |                             Run our tool                              | *)

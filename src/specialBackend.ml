@@ -39,8 +39,8 @@ module Emit = struct
             let sexp_of_t = $uid:Ident.string_of_uident first_name$.sexp_of_t;;
 
         end
-      >>
-        | _ -> failwith "AST must contain at least one Node" end
+          >>
+        | _ -> raise (Error.Error Error.AtLeastOneNode) end
     | Program.Map (nm, (st,dt), nodes) ->
       let methods = List.map (rewrite_node (st,dt)) nodes in
       <:str_item<

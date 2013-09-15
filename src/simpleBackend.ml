@@ -22,7 +22,7 @@ module Emit = struct
                 and $rest_types |> Ast.tyAnd_of_list$
             end
       >>
-        | _ -> failwith "AST must contain at least one Node"
+        | _ -> raise (Error.Error Error.AtLeastOneNode)
       end
 
     | Program.Map (nm, (st,dt), nodes) ->
