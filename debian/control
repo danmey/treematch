@@ -14,7 +14,7 @@ Build-Depends:
  libsexplib-camlp4-dev,
  camlp4-extra,
  menhir
-Standards-Version: 3.9.2
+Standards-Version: 3.9.4
 Homepage: https://github.com/danmey/treematch
 Vcs-Git: git://github.com/danmey/treematch
 Vcs-Browser: https://github.com/danmey/treematch
