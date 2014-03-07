@@ -1,5 +1,5 @@
 # Target
-Name = treematch
+Name		= treematch
 
 # Sources
 OCaml-Sources[] =
